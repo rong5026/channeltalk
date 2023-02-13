@@ -13,6 +13,6 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public/html", "test.html"));
   });
 
-app.listen(8080, () => {
+app.listen(3000, () => {
     console.log("Express App on port 3000!");
 });
