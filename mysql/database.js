@@ -2,11 +2,11 @@ const mysql = require('mysql');
 
 
 const connection = mysql.createConnection({
-    host:'entz.mysql.database.azure.com',
-    user:'rong5026',
-    password:'@ghddudghks1029',
+    host:'hackathonserver.cynr3skzai4u.ap-northeast-2.rds.amazonaws.com',
+    user:'root',
+    password:'00000000',
     port:'3306',
-    database:'hackathon'
+    database:'hackathondb'
 });
 
 connection.connect();
