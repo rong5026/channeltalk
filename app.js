@@ -26,6 +26,8 @@ sequelize
     console.error(err);
   });
 
+app.use("/users", require("./routes/users")); // 유저
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/html", "test.html"));
 });
