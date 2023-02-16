@@ -4,12 +4,19 @@ const cors = require('cors');
 const path = require("path");
 const { sequelize } = require("./models");
 
-const socket = require('socket.io');
+const { Server } = require('socket.io');
 const http = require('http');
 const fs = require('fs');
 
+
+
 const server = http.createServer(app);
-const io = socket(server);
+const io = new Server(server, {
+  cors : {
+    origin : '*',
+    methods : ["GET","POST"],
+  },
+});
 
 
 require('dotenv').config();  //.env 파일에서 환경변수 가져오기
@@ -44,48 +51,24 @@ app.use(express.static('./public/js'))
 
 // test chat
 
-app.get('/', function (request, response) {
-  fs.readFile('./public/index.html', function (err, data) {
-    if (err) {
-      response.send('에러')
-    } else {
-      response.writeHead(200, { 'Content-Type': 'text/html' })
-        .write(data)
-        .end();
-    }
-  })
-})
+io.on('connection', (socket) => {
 
-io.sockets.on('connection', (socket) => {
+  console.log(`유저가 들어왔습니다 : ${socket.id}`);
 
-  console.log(socket.id);
-  console.log(socket);
-  // 새로 입장
-  socket.on('newUserConnect', (name) => {
-
-    socket.name = name;
-
-    io.sockets.emit('updateMessage', {
-      name: 'SERVER',
-      message: name + '님이 접속했습니다'
-    });
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`유저의 아이디 : ${socket.id} 가 ${data}방에 들어옴`);
   });
+
+  socket.on("send_message" , (data) => {
+    socket.to(data.room).emit("receive_message", data);
+  })
 
   // 퇴장
   socket.on('disconnect', () => {
+    console.log("유저가 퇴장했습니다 ", socket.id)
 
-    socket.broadcast.emit('updateMessage', {
-      name: 'SERVER',
-      message: socket.name + "님이 퇴장했습니다."
-    });
   });
-
-  //메세지 전송
-  socket.on('sendMessage', function (data) {
-    data.name = socket.name;
-    io.sockets.emit('updateMessage', data);
-  });
-
 })
 
 
@@ -94,7 +77,7 @@ io.sockets.on('connection', (socket) => {
 //   res.sendFile(path.join(__dirname, "public", "test.html"));
 // });
 
-server.listen(8080, () => {
+server.listen(3000, () => {
   console.log("소켓서버 실행 중..");
 })
 
