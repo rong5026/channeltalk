@@ -1,53 +1,76 @@
-/* 메인 */
-#main {
-    margin: auto;
-    margin-top: 100px;
-    border-radius: 20px;
-    background-color: lightblue;
-    text-align: center;
-    width: 500px;
-    height: 800px;
-  }
-  
-  /* 채팅 영역 */
-  #chat {
-    height: 90%;
+
+
+@charset "utf-8";
+
+.app__wrap{
+    margin: 0 auto;
+    padding: 50px 0 0;
+    position: relative;
     width: 100%;
+    max-width: 350px;
+    min-width: 200px;
+    font-size: 14px;
+    border-top: 20px solid #5c007a;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+.app__info{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    background: #8e24aa;
+}
+
+.app__window{
     overflow-y: auto;
-  }
-  
-  /* 접속 알림 */
-  .connect {
-    width: 90%;
-    margin: auto;
-    background-color: aquamarine;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  /* 접속 종료 알림 */
-  .disconnect {
-    width: 90%;
-    margin: auto;
-    background-color: indianred;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  /* 내가 보낸 메시지 */
-  .me {
-    width: 90%;
-    margin: auto;
-    background-color: lemonchiffon;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  
-  /* 상대방이 보낸 메시지 */
-  .other {
-    width: 90%;
-    margin: auto;
-    background-color: white;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
+    padding: 10px 20px;
+    height: 400px;
+    background: #e1e2e1;
+}
+
+.output__user{
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.output__user__name{
+    margin-right:10px;
+    font-weight:700;
+}
+
+.app__input__wrap{
+    padding: 10px;
+    background: #f5f5f6;
+}
+
+.app__input__wrap:after{
+    content:'';
+    display:block;
+    clear:both;
+}
+
+.app__input{
+    float: left;
+    display: block;
+    width: 80%;
+    height: 25px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.app__button{
+    float: left;
+    display: block;
+    width: 20%;
+    height: 25px;
+    border: 1px solid #ccc;
+    border-left: 0;
+    background: #fff;
+    box-sizing: border-box;
+    cursor: pointer;
+}

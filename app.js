@@ -22,7 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: '*',
   credentials: 'true'
-
 }));
 
 // db연결
@@ -40,68 +39,65 @@ app.use("/users", require("./routes/users")); // 유저
 app.use("/images", require("./routes/images")); // 이미지
 
 app.use(express.static('public'))
-app.use('/css', express.static('./public/css'))
-app.use('/javascript', express.static('./public/javascript'))
+app.use(express.static('./public/css'))
+app.use(express.static('./public/js'))
 
 // test chat
 
-app.get('/chat', function(request, response) {
-  fs.readFile('./public/html/index.html', function(err, data) {
-    if(err) {
+app.get('/', function (request, response) {
+  fs.readFile('./public/index.html', function (err, data) {
+    if (err) {
       response.send('에러')
     } else {
-      response.writeHead(200, {'Content-Type':'text/html'})
-      response.write(data)
-      response.end()
+      response.writeHead(200, { 'Content-Type': 'text/html' })
+        .write(data)
+        .end();
     }
   })
 })
 
-io.on('connection', (socket) => {
+io.sockets.on('connection', (socket) => {
 
-  // 유저 접속
-  socket.on('newUser', (name) => {
-    console.log(name + ' 님이 접속하였습니다.');
+  console.log(socket.id);
+  console.log(socket);
+  // 새로 입장
+  socket.on('newUserConnect', (name) => {
 
     socket.name = name;
 
-    io.socket.emit('update', {
-      type: 'connect', name: 'SERVER', message: name + '님이 접속하였습니다.'
+    io.sockets.emit('updateMessage', {
+      name: 'SERVER',
+      message: name + '님이 접속했습니다'
     });
-  })
-  
-  // 접속한 메세지 받기
-  socket.on('message', (data) => {
-    /* 받은 데이터에 누가 보냈는지 이름을 추가 */
-    data.name = socket.name
-    console.log(data)
-    /* 보낸 사람을 제외한 나머지 유저에게 메세지 전송 */
-    socket.broadcast.emit('update', data)
-  })
-  
-  // 접속 종료
-  socket.on('disconnect', () => {
-    console.log(socket.name + '님이 나가셨습니다.')
-    /* 나가는 사람을 제외한 나머지 유저에게 메세지 전송 */
-    socket.broadcast.emit('update', {type: 'disconnect', name: 'SERVER', message: socket.name + '님이 나가셨습니다.'})
-  })
+  });
 
-  socket.on('send', function(data) {
-    console.log('전달된 메시지:', data.msg)
-  })
- 
-  socket.on('disconnect', function() {
-    console.log('접속 종료')
-  })
+  // 퇴장
+  socket.on('disconnect', () => {
+
+    socket.broadcast.emit('updateMessage', {
+      name: 'SERVER',
+      message: socket.name + "님이 퇴장했습니다."
+    });
+  });
+
+  //메세지 전송
+  socket.on('sendMessage', function (data) {
+    data.name = socket.name;
+    io.sockets.emit('updateMessage', data);
+  });
 
 })
 
 
 // test front
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "test.html"));
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "public", "test.html"));
+// });
 
-app.listen(3000, () => {
-  console.log("Express App on port 3000!");
-});
+server.listen(8080, () => {
+  console.log("소켓서버 실행 중..");
+})
+
+// app.listen(3000, () => {
+//   console.log("Express App on port 3000!");
+// });
