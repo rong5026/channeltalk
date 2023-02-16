@@ -6,7 +6,7 @@ const models = require("../models");
 router.get('/', (req, res, next) => {
     models.User.findAll()
       .then((users) => {
-        res.json(users);
+        res.status(200).json(users);
       })
       .catch((err) => {
         console.error(err);

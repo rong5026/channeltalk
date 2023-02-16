@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require("path");
 const { sequelize } = require("./models");
 
+require('dotenv').config();  //.env 파일에서 환경변수 가져오기
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -14,7 +15,6 @@ app.use(cors({
 
 }));
 
-require('dotenv').config();  //.env 파일에서 환경변수 가져오기
 
 // db연결
 sequelize
@@ -27,9 +27,10 @@ sequelize
   });
 
 app.use("/users", require("./routes/users")); // 유저
+app.use("/images",require("./routes/images")); // 이미지
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/html", "test.html"));
+  res.sendFile(path.join(__dirname, "public", "test.html"));
 });
 
 app.listen(3000, () => {
