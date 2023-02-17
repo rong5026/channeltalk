@@ -4,15 +4,15 @@ const models = require("../models");
 
 // 유저 전체 조회
 router.get('/', (req, res, next) => {
-    models.User.findAll()
-      .then((users) => {
-        res.status(200).json(users);
-      })
-      .catch((err) => {
-        console.error(err);
-        next(err);
-      })
-  });
+  models.User.findAll()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      next(err);
+    })
+});
 
 
 

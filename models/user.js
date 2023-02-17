@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('user', {
-    id: {
+    user_id: {
       type: DataTypes.STRING(45),
       allowNull: false,
       primaryKey: true
@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(45),
       allowNull: false
     },
-    image: {
+    user_image: {
       type: DataTypes.STRING(200),
       allowNull: true
     }
@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id" },
+          { name: "user_id" },
         ]
       },
     ]
