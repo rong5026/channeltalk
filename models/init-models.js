@@ -1,17 +1,17 @@
 var DataTypes = require("sequelize").DataTypes;
 var _chat = require("./chat");
-var _contants = require("./contants");
+var _contents = require("./contents");
 var _user = require("./user");
 
 function initModels(sequelize) {
   var chat = _chat(sequelize, DataTypes);
-  var contants = _contants(sequelize, DataTypes);
+  var contents = _contents(sequelize, DataTypes);
   var user = _user(sequelize, DataTypes);
 
 
   return {
     chat,
-    contants,
+    contents,
     user,
   };
 }
